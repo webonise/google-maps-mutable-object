@@ -1,0 +1,3 @@
+[submodule "jquery-ui-rotatable"]
+	path = jquery-ui-rotatable
+	url = git@github.com:godswearhats/jquery-ui-rotatable.git

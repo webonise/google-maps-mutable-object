@@ -1,0 +1,51 @@
+- jqueryVersion = "1.11.0"
+
+!!! 5
+%html
+  %head
+    %script{:type => 'text/javascript', :src=>'http://maps.googleapis.com/maps/api/js?v=3.16'}
+    %script{:type => 'text/javascript', :src=>"jquery-ui-#{jqueryVersion}.custom/external/jquery/jquery.js"}
+    %link{:href=>"jquery-ui-#{jqueryVersion}.custom/jquery-ui.css", :rel => 'stylesheet'}
+    %script{:type => 'text/javascript', :src=>"jquery-ui-#{jqueryVersion}.custom/jquery-ui.js"}
+    %link{:href=>'jquery-ui-rotatable/jquery.ui.rotatable.css', :rel=>'stylesheet'}
+    %script{:type => 'text/javascript', :src=>"jquery-ui-rotatable/jquery.ui.rotatable.js"}
+    %script{:type => 'text/javascript', :src=>'webonise-gmaps-mutobj.js'}
+    :css
+      html, body, #map-canvas {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+      }
+
+      #marker {
+        border: 2px solid red;
+        background: silver;
+      }
+
+    :javascript
+      google.maps.event.addDomListener(window, 'load', function() {
+        var weboniseOffice = new google.maps.LatLng(35.892047, -78.755325);
+        var mutableObjectPosition = weboniseOffice;
+
+        var mapOptions = {
+          zoom: 19,
+          center: weboniseOffice,
+          mapTypeId: google.maps.MapTypeId.SATELLITE
+        };
+
+        console.log("Creating map centered at " + weboniseOffice.toString());
+        var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+        console.log("Created map; now creating mutable object at " + mutableObjectPosition.toString());
+        var mutableObject = new webonise.gmaps.MutableObject(
+          map,
+          $('<img id="marker" src="marker.png" height=100 width=100></img>'),
+          mutableObjectPosition,
+          function(coordinates) {
+            console.debug("Updating the coordinates of the mutable object");
+            console.dir(coordinates);
+          }
+        );
+        console.log("Created mutable object; done!");
+      });
+  %body
+    #map-canvas
